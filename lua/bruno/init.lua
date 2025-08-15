@@ -135,12 +135,12 @@ local function format_bruno_output(raw_output)
 	local formatted = {}
 	local result = data.results[1]
 
-	table.insert(formatted, "REQUEST DETAILS")
+	table.insert(formatted, "REQUEST DETAILS:")
 	table.insert(formatted, string.format("  Method: %s", result.request.method))
 	table.insert(formatted, string.format("  URL: %s", result.request.url))
 	table.insert(formatted, "")
 
-	table.insert(formatted, "RESPONSE")
+	table.insert(formatted, "RESPONSE:")
 	if is_not_nil(result.error) then
 		table.insert(formatted, string.format("  Error: %s", result.error))
 	end
@@ -156,7 +156,7 @@ local function format_bruno_output(raw_output)
 	table.insert(formatted, "")
 
 	if is_not_nil(result.response.data) then
-		table.insert(formatted, "RESPONSE DATA")
+		table.insert(formatted, "RESPONSE DATA:")
 		table.insert(formatted, "```json")
 
 		local data_content = result.response.data == null and "null"
