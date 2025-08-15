@@ -11,10 +11,9 @@
 - **Persistent sidebar** - Reuses output buffer to avoid window clutter
 
 ## Screenshots:
-<img src=".github/assets/formatted-output.png" width="20%"> 
-<img src=".github/assets/full-output.png" width="20%">
-<img src=".github/assets/search-files.png" width="20%"> 
-<img src=".github/assets/select-environment.png" width="20%">
+<img src=".github/assets/formatted-output.png" width="40%"> <img src=".github/assets/full-output.png" width="40%">
+
+<img src=".github/assets/search-files.png" width="40%"> <img src=".github/assets/select-environment.png" width="40%">
 
 # Installation
 
@@ -65,4 +64,3 @@ Can also be installed from [nixpkgs](https://search.nixos.org/packages?channel=u
 ### Toggle bruno-cli output formatting
 
 :BrunoToggleFormat
-```
