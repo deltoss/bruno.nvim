@@ -2,12 +2,6 @@ local M = {}
 
 -- Require the necessary modules
 local Path = require("plenary.path")
-local telescope = require("telescope.builtin")
-local actions = require("telescope.actions")
-local action_state = require("telescope.actions.state")
-local pickers = require("telescope.pickers")
-local finders = require("telescope.finders")
-local conf = require("telescope.config").values
 
 -- Configuration
 M.current_env = nil
@@ -51,6 +45,9 @@ local search_pickers = {
 	end,
 
 	["telescope"] = function(search_dirs, prompt)
+		local telescope = require("telescope.builtin")
+		local action_state = require("telescope.actions.state")
+		local actions = require("telescope.actions")
 		telescope.live_grep({
 			prompt_title = prompt,
 			search_dirs = search_dirs,
@@ -97,6 +94,9 @@ local env_pickers = {
 	end,
 
 	["telescope"] = function(env_names, prompt)
+		local pickers = require("telescope.pickers")
+		local finders = require("telescope.finders")
+		local conf = require("telescope.config").values
 		pickers
 			.new({}, {
 				prompt_title = prompt,
