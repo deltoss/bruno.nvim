@@ -293,7 +293,7 @@ local function run_bruno()
 	end
 
 	root_dir = vim.fn.fnamemodify(root_dir, ":p:h")
-	local temp_file = vim.fn.system("mktemp"):gsub("\n", "")
+	local temp_file = vim.fn.tempname()
 	local cmd = string.format(
 		"cd %s && bru run %s -o %s",
 		vim.fn.shellescape(root_dir),
