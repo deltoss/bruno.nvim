@@ -410,9 +410,11 @@ local function run_bruno()
 
 				if M.show_formatted_output then
 					vim.api.nvim_buf_set_option(bufnr, "filetype", "markdown")
-					vim.api.nvim_buf_set_option(bufnr, "foldmethod", "marker")
-					vim.api.nvim_buf_set_option(bufnr, "foldmarker", "## Headers,End Headers")
-					vim.api.nvim_buf_set_option(bufnr, "foldlevel", 0)
+					for _, winid in ipairs(vim.fn.win_findbuf(bufnr)) do
+						vim.api.nvim_set_option_value("foldmethod", "marker", { win = winid })
+						vim.api.nvim_set_option_value("foldmarker", "## Headers,End Headers", { win = winid })
+						vim.api.nvim_set_option_value("foldlevel", 0, { win = winid })
+					end
 					local ok, result = pcall(format_bruno_output, output)
 					if ok then
 						lines = result
@@ -463,9 +465,11 @@ local function toggle_output_format()
 			local lines
 			if M.show_formatted_output then
 				vim.api.nvim_buf_set_option(bufnr, "filetype", "markdown")
-				vim.api.nvim_buf_set_option(bufnr, "foldmethod", "marker")
-				vim.api.nvim_buf_set_option(bufnr, "foldmarker", "## Headers,End Headers")
-				vim.api.nvim_buf_set_option(bufnr, "foldlevel", 0)
+				for _, winid in ipairs(vim.fn.win_findbuf(bufnr)) do
+					vim.api.nvim_set_option_value("foldmethod", "marker", { win = winid })
+					vim.api.nvim_set_option_value("foldmarker", "## Headers,End Headers", { win = winid })
+					vim.api.nvim_set_option_value("foldlevel", 0, { win = winid })
+				end
 				local ok, result = pcall(format_bruno_output, M.last_raw_output)
 				lines = ok and result or vim.split(M.last_raw_output, "\n")
 			else
