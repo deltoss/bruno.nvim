@@ -364,15 +364,10 @@ local function run_bruno()
 		return
 	end
 	local temp_file = vim.fn.tempname()
-	local cmd = string.format(
-		"cd %s && bru run %s -o %s",
-		vim.fn.shellescape(root_dir),
-		vim.fn.shellescape(current_file),
-		vim.fn.shellescape(temp_file)
-	)
+	local cmd = { "bru", "run", current_file, "-o", temp_file }
 
 	if M.current_env then
-		cmd = cmd .. " --env " .. vim.fn.shellescape(M.current_env)
+		vim.list_extend(cmd, { "--env", M.current_env })
 	end
 
 	local bufnr = create_or_get_sidebar()
@@ -432,13 +427,17 @@ local function run_bruno()
 		end)
 	end
 
-	vim.fn.jobstart(cmd, {
+	local job = vim.fn.jobstart(cmd, {
+		cwd = root_dir,
 		on_stdout = append_output,
 		on_stderr = append_output,
 		on_exit = on_exit,
 		stdout_buffered = true,
 		stderr_buffered = true,
 	})
+	if job <= 0 then
+		vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, { "Could not start Bruno CLI. Check that bru and Node.js are on PATH." })
+	end
 end
 
 local function toggle_output_format()
