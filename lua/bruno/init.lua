@@ -365,6 +365,17 @@ local function run_bruno()
 	end
 	local temp_file = vim.fn.tempname()
 	local cmd = { "bru", "run", current_file, "-o", temp_file }
+	if vim.fn.has("win32") == 1 then
+		local launcher = vim.fn.exepath("bru")
+		if launcher:lower():match("%.cmd$") or launcher:lower():match("%.bat$") then
+			-- npm batch launchers cannot be executed directly by jobstart.
+			local cli_dir = vim.fn.fnamemodify(launcher, ":h") .. "/node_modules/@usebruno/cli"
+			local manifest = vim.json.decode(table.concat(vim.fn.readfile(cli_dir .. "/package.json"), "\n"))
+			local entry = type(manifest.bin) == "table" and manifest.bin.bru or manifest.bin
+			cmd[1] = cli_dir .. "/" .. entry
+			table.insert(cmd, 1, "node")
+		end
+	end
 
 	if M.current_env then
 		vim.list_extend(cmd, { "--env", M.current_env })
