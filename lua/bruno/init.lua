@@ -398,11 +398,13 @@ local function run_bruno()
 
 	local function on_exit(_, exit_code)
 		vim.schedule(function()
-			if exit_code ~= 0 and exit_code ~= 1 then
+			local ok, report = pcall(vim.fn.readfile, temp_file)
+			vim.fn.delete(temp_file)
+			if (exit_code ~= 0 and exit_code ~= 1) or not ok then
 				vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, { "Bruno run failed with the following output:" })
 				vim.api.nvim_buf_set_lines(bufnr, -1, -1, false, output_lines)
 			else
-				local output = vim.fn.system("cat " .. vim.fn.shellescape(temp_file))
+				local output = table.concat(report, "\n")
 				M.last_raw_output = output
 				local lines
 
@@ -434,7 +436,6 @@ local function run_bruno()
 
 				vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
 			end
-			vim.fn.system("rm " .. vim.fn.shellescape(temp_file))
 		end)
 	end
 
